@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  profiles: dev
+  datasource:
+    initialize: false
+    driver-class-name: com.mysql.jdbc.Driver
+    database: lego
+    host: localhost
+    port: 3306
+    url: jdbc:mysql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.database}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: password
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 100
+  jpa:
+    show-sql: true
+  redis:
+    host: localhost
+    port: 6379
+    password:
+logging.level.org.springframework.web: DEBUG
