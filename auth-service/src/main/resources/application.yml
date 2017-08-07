@@ -22,4 +22,6 @@ spring:
     host: localhost
     port: 6379
     password:
+flyway:
+  validate-on-migrate: false
 logging.level.org.springframework.web: DEBUG

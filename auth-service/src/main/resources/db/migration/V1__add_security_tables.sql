@@ -46,7 +46,7 @@ CREATE TABLE `account` (
   `phone`    VARCHAR(255)    NOT NULL,
   `name`     VARCHAR(255)             DEFAULT '',
   `password` VARCHAR(255)    NOT NULL,
-  `roles`    SET('ADMIN', 'OPERATOR', 'USER'),
+  `roles`    SET ('ADMIN', 'OPERATOR', 'USER'),
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
