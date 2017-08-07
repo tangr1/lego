@@ -1,4 +1,4 @@
-package com.tangr1.security.domain;
+package com.tangr1.security.entity;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;

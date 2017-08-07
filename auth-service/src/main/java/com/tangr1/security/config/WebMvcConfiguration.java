@@ -80,7 +80,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public AuditLogger auditLogger() {
-        return (boolean granted, AccessControlEntry ace) -> System.out.println(granted + " " + ace);
+        return (boolean granted, AccessControlEntry ace) -> logger.info(granted + " " + ace);
     }
 
     @Bean

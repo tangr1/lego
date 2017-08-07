@@ -11,9 +11,9 @@ public class HomeController {
     @GetMapping
     public String home(final Principal principal) {
         if (principal == null) {
-            return "Hello anonymous";
+            return "你好，访客";
         } else {
-            return "Hello " + principal.getName();
+            return "你好，" + principal.getName();
         }
     }
 }

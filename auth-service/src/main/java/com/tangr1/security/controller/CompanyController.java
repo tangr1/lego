@@ -1,6 +1,6 @@
 package com.tangr1.security.controller;
 
-import com.tangr1.security.domain.Company;
+import com.tangr1.security.entity.Company;
 import com.tangr1.security.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,12 +54,14 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public Company get(final @PathVariable Long id) {
         return companyRepository.findOne(id);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasPermission(#id, 'com.tangr1.security.domain.Company', 'administration')")
+    @Transactional
     public Company update(final @PathVariable Long id, final @RequestBody Company request) {
         Company company = companyRepository.findOne(id);
         company.setName(request.getName());

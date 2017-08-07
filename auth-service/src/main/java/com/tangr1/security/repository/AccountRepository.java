@@ -1,6 +1,6 @@
 package com.tangr1.security.repository;
 
-import com.tangr1.security.domain.Account;
+import com.tangr1.security.entity.Account;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

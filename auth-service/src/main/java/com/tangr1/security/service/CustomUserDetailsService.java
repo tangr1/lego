@@ -1,6 +1,6 @@
 package com.tangr1.security.service;
 
-import com.tangr1.security.domain.Account;
+import com.tangr1.security.entity.Account;
 import com.tangr1.security.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
