@@ -1,4 +1,4 @@
-package com.tangr1.security;
+package com.github.tangr1.lego.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

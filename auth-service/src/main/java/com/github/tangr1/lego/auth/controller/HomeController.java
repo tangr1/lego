@@ -1,4 +1,4 @@
-package com.tangr1.security.controller;
+package com.github.tangr1.lego.auth.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

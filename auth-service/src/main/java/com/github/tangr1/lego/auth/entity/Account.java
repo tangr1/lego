@@ -1,4 +1,4 @@
-package com.tangr1.security.entity;
+package com.github.tangr1.lego.auth.entity;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;

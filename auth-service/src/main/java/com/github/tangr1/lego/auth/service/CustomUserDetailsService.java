@@ -1,7 +1,7 @@
-package com.tangr1.security.service;
+package com.github.tangr1.lego.auth.service;
 
-import com.tangr1.security.entity.Account;
-import com.tangr1.security.repository.AccountRepository;
+import com.github.tangr1.lego.auth.entity.Account;
+import com.github.tangr1.lego.auth.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

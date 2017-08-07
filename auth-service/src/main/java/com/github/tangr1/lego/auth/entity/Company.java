@@ -1,4 +1,4 @@
-package com.tangr1.security.entity;
+package com.github.tangr1.lego.auth.entity;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

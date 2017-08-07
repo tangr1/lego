@@ -1,7 +1,7 @@
-package com.tangr1.security.config;
+package com.github.tangr1.lego.auth.config;
 
-import com.tangr1.security.service.CustomClientDetailsService;
-import com.tangr1.security.service.CustomUserDetailsService;
+import com.github.tangr1.lego.auth.service.CustomClientDetailsService;
+import com.github.tangr1.lego.auth.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

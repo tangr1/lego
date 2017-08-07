@@ -1,7 +1,7 @@
-package com.tangr1.security.controller;
+package com.github.tangr1.lego.auth.controller;
 
-import com.tangr1.security.entity.Company;
-import com.tangr1.security.repository.CompanyRepository;
+import com.github.tangr1.lego.auth.repository.CompanyRepository;
+import com.github.tangr1.lego.auth.entity.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.BasePermission;

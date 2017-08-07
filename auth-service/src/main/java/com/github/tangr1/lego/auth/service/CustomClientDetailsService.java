@@ -1,6 +1,6 @@
-package com.tangr1.security.service;
+package com.github.tangr1.lego.auth.service;
 
-import com.tangr1.security.repository.ClientRepository;
+import com.github.tangr1.lego.auth.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
