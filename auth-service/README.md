@@ -10,7 +10,7 @@
 
 如图所示：
 
-![认证鉴权架构图](https://github.com/ctofunds/louxiaoer/blob/master/spring-security/architecture.png)
+![认证鉴权架构图](https://github.com/tangr1/lego/blob/master/auth-service/architecture.png)
 
 一个典型的认证鉴权流程是：
 
