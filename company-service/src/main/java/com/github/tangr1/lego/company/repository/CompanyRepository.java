@@ -1,6 +1,6 @@
-package com.github.tangr1.lego.auth.repository;
+package com.github.tangr1.lego.company.repository;
 
-import com.github.tangr1.lego.auth.entity.Company;
+import com.github.tangr1.lego.company.entity.Company;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.github.tangr1.lego.auth.controller;
+package com.github.tangr1.lego.company.controller;
 
-import com.github.tangr1.lego.auth.repository.CompanyRepository;
-import com.github.tangr1.lego.auth.entity.Company;
+import com.github.tangr1.lego.company.repository.CompanyRepository;
+import com.github.tangr1.lego.company.entity.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.BasePermission;
@@ -45,7 +45,7 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    @PreAuthorize("hasPermission(#id, 'com.tangr1.security.domain.Company', 'administration')")
+    @PreAuthorize("hasPermission(#id, 'com.github.tangr1.lego.auth.entity.Company', 'administration')")
     public void delete(final @PathVariable Long id) {
         Company company = companyRepository.findOne(id);
         ObjectIdentity identity = new ObjectIdentityImpl(company);
@@ -60,7 +60,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasPermission(#id, 'com.tangr1.security.domain.Company', 'administration')")
+    @PreAuthorize("hasPermission(#id, 'com.github.tangr1.lego.auth.entity.Company', 'administration')")
     @Transactional
     public Company update(final @PathVariable Long id, final @RequestBody Company request) {
         Company company = companyRepository.findOne(id);

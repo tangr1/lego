@@ -1,4 +1,4 @@
-package com.github.tangr1.lego.auth.config;
+package com.github.tangr1.lego.company.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +80,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public AuditLogger auditLogger() {
-        return (boolean granted, AccessControlEntry ace) -> System.out.println(granted + " " + ace);
+        return (boolean granted, AccessControlEntry ace) -> logger.info(granted + " " + ace);
     }
 
     @Bean

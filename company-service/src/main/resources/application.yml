@@ -22,7 +22,18 @@ spring:
     host: localhost
     port: 6379
     password:
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8080/user
+    client:
+      client-id: company-service
+      client-secret: password
+      access-token-uri: http://localhost:8080/oauth/token
+      grant-type: client_credentials
+      scope: backend
 flyway:
   validate-on-migrate: false
+server:
+  port: 8090
 logging.level.org.springframework.web: DEBUG
-logging.level.org.springframework.security: DEBUG

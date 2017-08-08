@@ -19,10 +19,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        Account account = accountRepository.findByPhone(phone);
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        Account account = accountRepository.findByName(name);
         if (account == null) {
-            throw new UsernameNotFoundException(String.format("注册手机为%s的用户不存在", phone));
+            throw new UsernameNotFoundException(String.format("用户名%s的用户不存在", name));
         }
         return account;
     }
