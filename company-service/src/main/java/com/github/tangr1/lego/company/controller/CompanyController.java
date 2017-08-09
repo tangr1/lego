@@ -1,7 +1,7 @@
 package com.github.tangr1.lego.company.controller;
 
-import com.github.tangr1.lego.company.repository.CompanyRepository;
 import com.github.tangr1.lego.company.entity.Company;
+import com.github.tangr1.lego.company.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.BasePermission;

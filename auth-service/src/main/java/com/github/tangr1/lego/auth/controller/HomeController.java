@@ -1,8 +1,6 @@
 package com.github.tangr1.lego.auth.controller;
 
-import com.github.tangr1.lego.auth.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +26,7 @@ public class HomeController {
 
 
     @GetMapping(path = "/user")
-    public UserDetails getCurrentAccount(Principal principal) {
-        return userDetailsService.loadUserByUsername(principal.getName());
+    public Principal getCurrentAccount(Principal principal) {
+        return principal;
     }
 }
