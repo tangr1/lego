@@ -45,7 +45,7 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    @PreAuthorize("hasPermission(#id, 'com.github.tangr1.lego.auth.entity.Company', 'administration')")
+    @PreAuthorize("hasPermission(#id, 'com.github.tangr1.lego.company.entity.Company', 'administration')")
     public void delete(final @PathVariable Long id) {
         Company company = companyRepository.findOne(id);
         ObjectIdentity identity = new ObjectIdentityImpl(company);
@@ -60,7 +60,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasPermission(#id, 'com.github.tangr1.lego.auth.entity.Company', 'administration')")
+    @PreAuthorize("hasPermission(#id, 'com.github.tangr1.lego.company.entity.Company', 'administration')")
     @Transactional
     public Company update(final @PathVariable Long id, final @RequestBody Company request) {
         Company company = companyRepository.findOne(id);

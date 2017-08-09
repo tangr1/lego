@@ -14,8 +14,6 @@ spring:
     username: root
     password: password
     type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      maximum-pool-size: 100
   jpa:
     show-sql: true
   redis:
