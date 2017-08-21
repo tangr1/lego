@@ -32,6 +32,7 @@ subprojects {
         }
         dependencies {
             dependency 'org.flywaydb:flyway-core:4.0.3'
+            dependency 'org.modelmapper:modelmapper:0.7.5'
         }
     }
 

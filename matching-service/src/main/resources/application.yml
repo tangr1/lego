@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  profiles: dev
+  datasource:
+    initialize: false
+    driver-class-name: com.mysql.jdbc.Driver
+    database: peatio_development
+    host: localhost
+    port: 3306
+    url: jdbc:mysql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.database}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: password
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    show-sql: true
+server:
+  context-path: /matching
+matching:
+  rabbitmq:
+    queue: peatio.matching
+    durable: false
+    exchange: spring-boot
+  dryrun: true
+  markets:
+    - id: btccny
+      code: 3
+      #name: BTC/CNY      # default name
+      base-unit: btc
+      quote-unit: cny
+      #price_group_fixed: 1 # aggregate price levels in orderbook
+      bid-fee: 0
+      bid-currency: cny
+      bid-fixed: 2
+      ask-fee: 0
+      ask-currency: btc
+      ask-fixed: 4
+      sort_order: 1
+      #visible: false     # default to true

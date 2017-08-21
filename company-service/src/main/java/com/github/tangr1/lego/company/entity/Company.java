@@ -13,7 +13,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotEmpty
-    @Column(nullable = false)
+    @Colume(nullable = false)
     private String name;
 
     public String getName() {

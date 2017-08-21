@@ -1,2 +1,3 @@
 include 'auth-service'
 include 'company-service'
+include 'matching-service'
