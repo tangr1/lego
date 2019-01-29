@@ -27,6 +27,12 @@ public class OrderEntity {
     private Date updatedAt;
     private String sn;
     private String source;
+    @Column(name = "ordType")
+    private String strategy;
+    private Double locked;
+    private Double originLocked;
+    private Double fundsReceived;
+    private Integer tradesCount;
 
     public String getStrategy() {
         return strategy;
@@ -35,13 +41,6 @@ public class OrderEntity {
     public void setStrategy(String strategy) {
         this.strategy = strategy;
     }
-
-    @Column(name = "ordType")
-    private String strategy;
-    private Double locked;
-    private Double originLocked;
-    private Double fundsReceived;
-    private Integer tradesCount;
 
     public Integer getId() {
         return id;

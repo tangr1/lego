@@ -13,6 +13,8 @@ import java.util.List;
 @ConfigurationProperties(prefix = "matching")
 public class MatchingConfig {
 
+    private List<Market> markets;
+
     public List<Market> getMarkets() {
         return markets;
     }
@@ -20,6 +22,4 @@ public class MatchingConfig {
     public void setMarkets(List<Market> markets) {
         this.markets = markets;
     }
-
-    private List<Market> markets;
 }

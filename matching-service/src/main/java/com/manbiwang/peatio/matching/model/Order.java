@@ -7,29 +7,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Order {
 
-    private Integer id;
+    private int id;
     private String market;
     private String type;
     @JsonProperty("ord_type")
     private String strategy;
-    private Double volume;
-    private Double price;
-    private Double locked;
-    private Long timestamp;
+    private double volume;
+    private double price;
+    private double locked;
+    private long timestamp;
 
-    public String getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(String strategy) {
-        this.strategy = strategy;
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -49,35 +41,43 @@ public class Order {
         this.type = type;
     }
 
-    public Double getVolume() {
+    public String getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(String strategy) {
+        this.strategy = strategy;
+    }
+
+    public double getVolume() {
         return volume;
     }
 
-    public void setVolume(Double volume) {
+    public void setVolume(double volume) {
         this.volume = volume;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public Double getLocked() {
+    public double getLocked() {
         return locked;
     }
 
-    public void setLocked(Double locked) {
+    public void setLocked(double locked) {
         this.locked = locked;
     }
 
-    public Long getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Long timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 }

@@ -1,6 +1,6 @@
 package com.manbiwang.peatio.matching.model;
 
-import com.manbiwang.peatio.matching.service.OrderMatcher;
+import com.manbiwang.peatio.matching.service.OrderHandler;
 
 /**
  * Created by tangrui on 8/17/17.
@@ -8,31 +8,60 @@ import com.manbiwang.peatio.matching.service.OrderMatcher;
 public class Trade {
 
     private Order order;
+    private Order topLimitOrder;
     private Order counter;
     private Market market;
     private OrderBook orderBook;
     private Double price;
     private Double volume;
     private Double funds;
+    private boolean ask;
+    private OrderHandler orderHandler;
+    private OrderHandler counterHandler;
 
-    public OrderMatcher getOrderMatcher() {
-        return orderMatcher;
+    public Trade() {
+
     }
 
-    public void setOrderMatcher(OrderMatcher orderMatcher) {
-        this.orderMatcher = orderMatcher;
+    public Trade(Order order, OrderHandler orderHandler, Market market, OrderBook orderBook) {
+        this.order = order;
+        this.orderHandler = orderHandler;
+        this.ask = order.getType().equals(OrderType.ASK);
+        this.orderBook = orderBook;
+        this.market = market;
     }
 
-    public OrderMatcher getCounterMatcher() {
-        return counterMatcher;
+    public Order getTopLimitOrder() {
+        return topLimitOrder;
     }
 
-    public void setCounterMatcher(OrderMatcher counterMatcher) {
-        this.counterMatcher = counterMatcher;
+    public void setTopLimitOrder(Order topLimitOrder) {
+        this.topLimitOrder = topLimitOrder;
     }
 
-    private OrderMatcher orderMatcher;
-    private OrderMatcher counterMatcher;
+    public boolean isAsk() {
+        return ask;
+    }
+
+    public void setAsk(boolean ask) {
+        this.ask = ask;
+    }
+
+    public OrderHandler getOrderHandler() {
+        return orderHandler;
+    }
+
+    public void setOrderHandler(OrderHandler orderHandler) {
+        this.orderHandler = orderHandler;
+    }
+
+    public OrderHandler getCounterHandler() {
+        return counterHandler;
+    }
+
+    public void setCounterHandler(OrderHandler counterHandler) {
+        this.counterHandler = counterHandler;
+    }
 
     public Double getPrice() {
         return price;

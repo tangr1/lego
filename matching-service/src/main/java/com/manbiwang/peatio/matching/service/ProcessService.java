@@ -1,12 +1,7 @@
 package com.manbiwang.peatio.matching.service;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.manbiwang.peatio.matching.config.MatchingConfig;
 import com.manbiwang.peatio.matching.entity.OrderEntity;
-import com.manbiwang.peatio.matching.exception.CannotFindMarketException;
-import com.manbiwang.peatio.matching.exception.CannotFindOrderMatcherException;
-import com.manbiwang.peatio.matching.exception.CannotFindOrderBookException;
 import com.manbiwang.peatio.matching.model.*;
 import com.manbiwang.peatio.matching.repository.OrderRepository;
 import org.modelmapper.ModelMapper;
@@ -14,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
@@ -23,7 +20,7 @@ import java.util.stream.Collectors;
  * Created by tangrui on 8/17/17.
  */
 @Service
-public class MatchingService {
+public class ProcessService {
 
     @Autowired
     private OrderRepository orderRepository;
@@ -33,9 +30,16 @@ public class MatchingService {
     private ModelMapper modelMapper;
     @Autowired
     private PublishService publishService;
+    @Autowired
+    private TradeService tradeService;
+    @Autowired
+    private LimitOrderHandler limitOrderHandler;
+    @Autowired
+    private MarketOrderHandler marketOrderHandler;
     private Map<Integer, OrderBook> orderBooks;
-    private Table<String, String, OrderMatcher> matchers;
+    private Map<String, OrderHandler> handlers;
     private Map<String, Market> markets;
+    private Map<Integer, String> marketCodes;
 
     @PostConstruct
     public void setup() {
@@ -58,19 +62,18 @@ public class MatchingService {
                 put("side", "bid");
             }});
         });
-        matchers = HashBasedTable.create();
-        matchers.put(OrderStrategy.LIMIT, OrderType.ASK, new LimitAskOrderMatcher());
-        matchers.put(OrderStrategy.LIMIT, OrderType.BID, new LimitBidOrderMatcher());
-        matchers.put(OrderStrategy.MARKET, OrderType.ASK, new MarketAskOrderMatcher());
-        matchers.put(OrderStrategy.MARKET, OrderType.BID, new MarketAskOrderMatcher());
+        handlers = new HashMap<>();
+        handlers.put(OrderStrategy.LIMIT, limitOrderHandler);
+        handlers.put(OrderStrategy.MARKET, marketOrderHandler);
         markets = matchingConfig.getMarkets().stream().collect(Collectors.toMap(Market::getId, e -> e));
+        marketCodes = matchingConfig.getMarkets().stream().collect(Collectors.toMap(Market::getCode, Market::getId));
         matchingConfig.getMarkets().forEach(market ->
                 orderRepository.findByCurrencyAndStateOrderById(market.getCode(), OrderState.WAIT)
                         .stream().map(this::toModel).forEach(this::submit));
     }
 
-    void processOrderRequest(OrderRequest orderRequest) {
-        switch(orderRequest.getAction()) {
+    public void processOrderRequest(OrderRequest orderRequest) {
+        switch (orderRequest.getAction()) {
             case "submit":
                 if (orderRequest.getOrder() != null) {
                     submit(orderRequest.getOrder());
@@ -89,56 +92,43 @@ public class MatchingService {
         }
     }
 
-    private void submit(Order order) {
-        OrderMatcher orderMatcher = getMatcher(order).orElseThrow(CannotFindOrderMatcherException::new);
-        Market market = getMarket(order.getMarket()).orElseThrow(CannotFindMarketException::new);
-        OrderBook orderBook = getOrderBook(market.getCode()).orElseThrow(CannotFindOrderBookException::new);
-        // 不断匹配订单做交易，直到volume耗尽
-        while (!orderMatcher.isFilled(order)) {
-            Trade trade = orderMatcher.match(order, orderBook)
-                    .flatMap(orderMatcher::trade)
-                    .orElseGet(Trade::new);
-            // 说明完全找不到可配对的订单，马上退出循环
-            if (trade.getCounter() == null) {
+    private void doSubmit(Order order, OrderHandler orderHandler, Market market, OrderBook orderBook) {
+        // 不断匹配订单做交易，直到数量耗尽
+        while (!orderHandler.isFilled(order)) {
+            Trade trade = new Trade(order, orderHandler, market, orderBook);
+            // 寻找配对订单
+            trade = tradeService.match(trade).orElse(null);
+            // 找不到可配对的订单，马上退出循环
+            if (trade == null || trade.getCounter() == null) {
                 break;
             }
-            getMatcher(trade.getCounter())
-                    .flatMap(counterMatcher -> counterMatcher.fillCounter(trade))
-                    .flatMap(orderMatcher::fillOrder)
-                    .ifPresent(publishService::publishTrade);
+            // 找到配对订单，进行交易成功会修改订单和配对订单的数量金额
+            trade.setCounterHandler(handlers.get(trade.getCounter().getStrategy()));
+            if (trade.getCounterHandler() == null) {
+                break;
+            }
+            tradeService.trade(trade).ifPresent(publishService::publishTrade);
         }
-        orderMatcher.finish(order, orderBook);
+        tradeService.finish(order, orderHandler, orderBook);
+    }
+
+    private void submit(Order order) {
+        Optional.ofNullable(handlers.get(order.getStrategy()))
+                .ifPresent(orderHandler -> Optional.ofNullable(markets.get(order.getMarket()))
+                        .ifPresent(market -> Optional.ofNullable(orderBooks.get(market.getCode()))
+                                .ifPresent(orderBook -> doSubmit(order, orderHandler, market, orderBook))));
     }
 
     private void cancel(Order order) {
-        OrderMatcher orderMatcher = getMatcher(order).orElseThrow(CannotFindOrderMatcherException::new);
-        Market market = getMarket(order.getMarket()).orElseThrow(CannotFindMarketException::new);
-        OrderBook orderBook = getOrderBook(market.getCode()).orElseThrow(CannotFindOrderBookException::new);
-        orderMatcher.cancel(order, orderBook);
-    }
-
-    private Optional<OrderMatcher> getMatcher(Order order) {
-        if (matchers.contains(order.getStrategy(), order.getType())) {
-            return Optional.of(matchers.get(order.getStrategy(), order.getType()));
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    private Optional<OrderBook> getOrderBook(Integer marketCode) {
-        if (orderBooks.containsKey(marketCode)) {
-            return Optional.of(orderBooks.get(marketCode));
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    private Optional<Market> getMarket(String id) {
-        return Optional.ofNullable(markets.get(id));
+        Optional.ofNullable(handlers.get(order.getStrategy()))
+                .ifPresent(orderHandler -> Optional.ofNullable(markets.get(order.getMarket()))
+                        .ifPresent(market -> Optional.ofNullable(orderBooks.get(market.getCode()))
+                                .ifPresent(orderBook -> tradeService.cancel(order, orderHandler, orderBook))));
     }
 
     private Order toModel(OrderEntity entity) {
         Order order = modelMapper.map(entity, Order.class);
+        order.setMarket(marketCodes.get(entity.getCurrency()));
         order.setTimestamp(entity.getCreatedAt().getTime());
         return order;
     }

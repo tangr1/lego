@@ -5,6 +5,10 @@ package com.manbiwang.peatio.matching.model;
  */
 public class OrderRequest {
 
+    private String action;
+    private Order order;
+    private String locale;
+
     public String getAction() {
         return action;
     }
@@ -28,8 +32,4 @@ public class OrderRequest {
     public void setLocale(String locale) {
         this.locale = locale;
     }
-
-    private String action;
-    private Order order;
-    private String locale;
 }

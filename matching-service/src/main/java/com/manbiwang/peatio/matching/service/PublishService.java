@@ -1,6 +1,7 @@
 package com.manbiwang.peatio.matching.service;
 
-import com.manbiwang.peatio.matching.model.*;
+import com.manbiwang.peatio.matching.model.Order;
+import com.manbiwang.peatio.matching.model.Trade;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,12 @@ public class PublishService {
     private RabbitTemplate rabbitTemplate;
 
     public void broadcast(Map<String, String> data) {
-
     }
 
     public void broadcastUpdate(Order order) {
-
     }
 
     public void broadcastRemove(Order order) {
-
     }
 
     public void publishTrade(Trade trade) {

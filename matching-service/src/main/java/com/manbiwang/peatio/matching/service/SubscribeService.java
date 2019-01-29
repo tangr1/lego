@@ -23,13 +23,13 @@ public class SubscribeService {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private MatchingService matchingService;
+    private ProcessService processService;
 
     @RabbitHandler
     public void process(@Payload byte[] payload) {
         try {
-             OrderRequest orderRequest = objectMapper.readValue(payload, OrderRequest.class);
-             matchingService.processOrderRequest(orderRequest);
+            OrderRequest orderRequest = objectMapper.readValue(payload, OrderRequest.class);
+            processService.processOrderRequest(orderRequest);
         } catch (IOException e) {
             logger.error("解析json失败：{}", new String(payload), e);
         }

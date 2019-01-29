@@ -10,6 +10,15 @@ public class Market {
     private String name;
     private String baseUnit;
     private String quoteUnit;
+    private Integer priceGroupFixed;
+    private Double bidFee;
+    private String bidCurrency;
+    private Integer bidFixed;
+    private Double askFee;
+    private String askCurrency;
+    private Integer askFixed;
+    private Integer sortOrder;
+    private Boolean visible;
 
     public String getId() {
         return id;
@@ -122,14 +131,4 @@ public class Market {
     public void setVisible(Boolean visible) {
         this.visible = visible;
     }
-
-    private Integer priceGroupFixed;
-    private Double bidFee;
-    private String bidCurrency;
-    private Integer bidFixed;
-    private Double askFee;
-    private String askCurrency;
-    private Integer askFixed;
-    private Integer sortOrder;
-    private Boolean visible;
 }
